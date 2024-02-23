@@ -14,4 +14,4 @@ RUN npm install --force
 EXPOSE 3000
 
 # Define the command to run the app
-CMD [ "npm", "start", "--host", "0.0.0.0"]
+CMD [ "npm", "start", "--", "--host", "0.0.0.0", "--port", "3000"]
