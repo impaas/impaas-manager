@@ -42,12 +42,12 @@ const GroupList: React.FC<GroupListProps> = ({ project }) => {
                     <Typography variant="subtitle1" fontWeight="bold">Group</Typography>
                   </TableCell>
                   <TableCell>
-                  <IconButton onClick = {() => {console.log(filteredGroups)}}>
+                  {/* <IconButton onClick = {() => {console.log(filteredGroups)}}>
                   <><ExtensionIcon titleAccess="Service" style={{ }}/></>
                   </IconButton>
                   <IconButton onClick = {() => {}}>
                   <><StorageIcon titleAccess="Volume" style={{  }}/></>
-                  </IconButton>
+                  </IconButton> */}
                   </TableCell>
                 </TableRow>
               </TableHead>

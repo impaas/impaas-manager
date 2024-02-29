@@ -215,7 +215,7 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
             <Box sx={{ flexGrow: 1 }} />
             <Grid container direction="column" spacing={2}>
             <Grid item>
-              <ScientiaButton />
+              {/* <ScientiaButton /> */}
             </Grid>
             <Grid item>
               <UploadButton onUploadStart={() => setIsLogOpen(true)} log={log} />
