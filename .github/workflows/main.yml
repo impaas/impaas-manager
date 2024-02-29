@@ -40,9 +40,9 @@ jobs:
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest 
 
-    - name: ImPaaS-Deploy
-      id: impaas-deploy
-      uses: /impaas/impaas-deploy@v1.9
-      with:
-        app-name: ${{ secrets.APP_NAME }}
-        deployment-token: ${{ secrets.TEAM_DEPLOYMENT_TOKEN }}
+    # - name: ImPaaS-Deploy
+    #   id: impaas-deploy
+    #   uses: /impaas/impaas-deploy@v1.9
+    #   with:
+    #     app-name: ${{ secrets.APP_NAME }}
+    #     deployment-token: ${{ secrets.TEAM_DEPLOYMENT_TOKEN }}
