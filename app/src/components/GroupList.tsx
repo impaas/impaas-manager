@@ -1,7 +1,9 @@
-import { Box, Card, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Card, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, IconButton } from '@mui/material';
 import { useEffect, useState } from "react";
 import Group from "./Group";
 import { headers } from "./Group";
+import ExtensionIcon from '@mui/icons-material/Extension';
+import StorageIcon from '@mui/icons-material/Storage';
 
 interface GroupListProps {
   project: string;
@@ -38,6 +40,14 @@ const GroupList: React.FC<GroupListProps> = ({ project }) => {
                 <TableRow>
                   <TableCell>
                     <Typography variant="subtitle1" fontWeight="bold">Group</Typography>
+                  </TableCell>
+                  <TableCell>
+                  <IconButton onClick = {() => {console.log(filteredGroups)}}>
+                  <><ExtensionIcon titleAccess="Service" style={{ }}/></>
+                  </IconButton>
+                  <IconButton onClick = {() => {}}>
+                  <><StorageIcon titleAccess="Volume" style={{  }}/></>
+                  </IconButton>
                   </TableCell>
                 </TableRow>
               </TableHead>

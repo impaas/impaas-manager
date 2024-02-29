@@ -22,8 +22,10 @@ import * as React from 'react';
 import { useState } from 'react';
 import ProjectList from './ProjectList';
 import UploadButton from './UploadButton';
+import ScientiaButton from './ScientiaButton';
+import { Grid } from '@mui/material';
 
-const drawerWidth: number = 240;
+const drawerWidth: number = 260;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -142,18 +144,6 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
               pr: '24px', // keep right padding when drawer closed
             }}
           >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography
               component="h1"
               variant="h6"
@@ -222,7 +212,15 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
               <ListItemButtonWithSelector itemName="Projects" setAssignmentName={setAssignmentName} />
             </List>
             <Divider />
-            <UploadButton onUploadStart={() => setIsLogOpen(true)} log={log} />
+            <Box sx={{ flexGrow: 1 }} />
+            <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <ScientiaButton />
+            </Grid>
+            <Grid item>
+              <UploadButton onUploadStart={() => setIsLogOpen(true)} log={log} />
+            </Grid>
+            </Grid>
             <IconButton onClick={handleHelpOpen} sx={{ marginLeft: 'auto' }}>
               <HelpOutlineIcon />
             </IconButton>

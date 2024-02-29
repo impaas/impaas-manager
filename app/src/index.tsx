@@ -27,17 +27,64 @@ msalInstance.addEventCallback(async (e: any) => {
 
     await msalInstance.acquireTokenSilent(tokenRequest)
       .then(async function (accessTokenResponse) {
-        let accessToken = await accessTokenResponse.accessToken
-        console.log(accessToken)
+        let tokenResponse = await accessTokenResponse.accessToken
+        localStorage.setItem("tsurutoken", tokenResponse)
+        
+        const graphHeaders = { 'Authorization': `Bearer ${tokenResponse}`}
+
+        const graphResponse = await fetch("https://graph.microsoft.com/v1.0/me", {
+          method: 'GET',
+          headers: graphHeaders,
+        })
+
+        const graphJson = await graphResponse.json()
+
+        const newHeaders = { 'Content-Type': 'application/json'}
+
+        var formBody = {token: tokenResponse, email: graphJson.userPrincipalName}
+
+        fetch('/auth/webLogin', {
+          method: 'POST',
+          headers: newHeaders,
+          body: JSON.stringify(formBody)
+        }).then(() => {
+          return tokenResponse;
+        })
+        .catch((error: any) => {
+          console.error(error);
+        });
       }).catch(error => {
         console.warn("silent token acquisition fails. acquiring token using popup");
         if (error instanceof InteractionRequiredAuthError) {
           // fallback to interaction when silent call fails
           msalInstance.acquireTokenPopup(tokenRequest)
-            .then(tokenResponse => {
-              console.log(tokenResponse);
-              return tokenResponse;
-            }).catch(error => {
+            .then(async (tokenResponse: any) => {
+              localStorage.setItem("tsurutoken", tokenResponse)
+              const graphHeaders = { 'Authorization': `Bearer ${localStorage.getItem("tsurutoken")}`, 'Content-Type': 'application/json'}
+
+              const graphResponse = await fetch("https://graph.microsoft.com/v1.0/me", {
+                method: 'POST',
+                headers: graphHeaders,
+              })
+
+              const graphJson = await graphResponse.json()
+
+              const newHeaders = { 'Content-Type': 'application/json'}
+
+              var formBody = {token: tokenResponse, email: graphJson.userPrincipalName}
+
+
+              fetch('/auth/login', {
+                method: 'POST',
+                headers: newHeaders,
+                body: JSON.stringify(formBody)
+              }).then(() => {
+                return tokenResponse;
+              })
+              .catch((error: any) => {
+                console.error(error);
+              });
+            }).catch((error: any) => {
               console.error(error);
             });
         } else {
