@@ -11,5 +11,9 @@ WORKDIR app
 
 RUN npm install --force
 
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
+ENV DANGEROUSLY_DISABLE_HOST_CHECK=true
+
 # Define the command to run the app
-CMD [ "npm", "start"]
+CMD ["npm", "start"]
