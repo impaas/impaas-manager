@@ -48,14 +48,14 @@ export const create = async (data: string, log: logT, activeacc:any) => {
             const projectName = project.toLowerCase().replace(/ /g, '_').replace(/[^a-z0-9_]/g, '');
             const extras = projects[project].extras;
             const groups = projects[project].groups;
-
+            const description = projects[project].description as string;
             try {
                 const response = await fetch('https://managertest.impaas.uk/add_project', {
                     method: 'POST',
                     headers: {
                         'teacher': activeacc.username,
                         'projectname': projectName,
-                        'description': ""
+                        'description': description,
                     },
                 });
 

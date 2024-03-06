@@ -247,6 +247,7 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
                   {`
     projects:
       your-project:
+        description: Your project description
         groups:
           1:
           - abc123
