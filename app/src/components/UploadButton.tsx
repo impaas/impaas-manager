@@ -8,27 +8,81 @@ type logT = (message: string) => void;
 interface UploadButtonProps {
     onUploadStart: () => void;
     log: logT;
+    activeacc: any;
+    reload: boolean;
+    setReload: any;
 }
 
-export const create = async (data: string, log: logT) => {
+export const create = async (data: string, log: logT, activeacc:any) => {
     const projects = YAML.parse(data).projects;
-    for (const project in projects) {
-        const projectName = project.toLowerCase().replace(/ /g, '_').replace(/[^a-z0-9_]/g, '');
-        const extras = projects[project].extras;
-        const groups = projects[project].groups;
-        for (const groupNum in groups) {
-            const teamName = `${projectName}_${groupNum.padStart(2, '0')}`;
-            await createTeam(teamName, log);
-            for (const user of groups[groupNum]) {
-                const userEmail = `${user}@ic.ac.uk`
-                await createUser(userEmail, log);
-                await addUserToTeam(userEmail, teamName, extras, log);
-            }
-            log(`Processed team ${teamName}`);
+    const projectNames = Object.keys(projects);
+    const projectNamesCleaned = projectNames.map((project: string) => project.toLowerCase().replace(/ /g, '_').replace(/[^a-z0-9_]/g, ''));
+    var canbreak = false;
+    try {
+        const response = await fetch('https://managertest.impaas.uk/query', {
+            method: 'GET',
+            headers: {
+                'teacher': activeacc.username
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-        log(`Processed project ${project}`);
+
+        const data = await response.json();
+        const fetchedProjects = data.projects.map((project: any) => (project.project_name));
+        //if project specified already exists
+        projectNamesCleaned.forEach((project: any) => {
+            if (fetchedProjects.includes(project)){
+                log("Error creating projects as " + project + " already exists")
+                canbreak = true;
+            }
+        })
+    } catch (error: any) {
+        log('Error fetching data: to upload yaml. ' + error.message);
+        return;
     }
-    log("Finished!");
+    if(!canbreak){
+        for (const project in projects) {
+            const projectName = project.toLowerCase().replace(/ /g, '_').replace(/[^a-z0-9_]/g, '');
+            const extras = projects[project].extras;
+            const groups = projects[project].groups;
+
+            try {
+                const response = await fetch('https://managertest.impaas.uk/add_project', {
+                    method: 'POST',
+                    headers: {
+                        'teacher': activeacc.username,
+                        'projectname': projectName,
+                        'description': ""
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            } catch {
+                console.log("error creating project in database")
+            }
+
+            for (const groupNum in groups) {
+                const teamName = `${projectName}_${groupNum.padStart(2, '0')}`;
+                await createTeam(teamName, log);
+                for (const user of groups[groupNum]) {
+                    const userEmail = `${user}@ic.ac.uk`
+                    await createUser(userEmail, log);
+                    await addUserToTeam(userEmail, teamName, extras, log);
+                }
+                log(`Processed team ${teamName}`);
+            }
+            log(`Processed project ${project}`);
+        }
+        log("Finished!");
+    }
+    else{
+        log("Aborted.")
+    }
 };
 
 const createUser = async (userEmail: string, log: logT) => {
@@ -90,7 +144,7 @@ const addUserToTeam = async (userEmail: string, teamName: string, extras: any, l
     }
 };
 
-const UploadButton: React.FC<UploadButtonProps> = ({ onUploadStart, log }) => {
+const UploadButton: React.FC<UploadButtonProps> = ({ onUploadStart, log, activeacc, reload, setReload }) => {
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) {
             return;
@@ -103,7 +157,8 @@ const UploadButton: React.FC<UploadButtonProps> = ({ onUploadStart, log }) => {
                 return;
             }
             const { result } = evt.target;
-            await create(result as string, log);
+            await create(result as string, log, activeacc);
+            setReload(!reload);
         }
         onUploadStart();
         reader.readAsBinaryString(file);

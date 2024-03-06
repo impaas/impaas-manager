@@ -59,7 +59,7 @@ msalInstance.addEventCallback(async (e: any) => {
           // fallback to interaction when silent call fails
           msalInstance.acquireTokenPopup(tokenRequest)
             .then(async (tokenResponse: any) => {
-              localStorage.setItem("tsurutoken", tokenResponse)
+              localStorage.setItem("tsurutoken", tokenResponse.token)
               const graphHeaders = { 'Authorization': `Bearer ${localStorage.getItem("tsurutoken")}`, 'Content-Type': 'application/json'}
 
               const graphResponse = await fetch("https://graph.microsoft.com/v1.0/me", {
@@ -71,10 +71,9 @@ msalInstance.addEventCallback(async (e: any) => {
 
               const newHeaders = { 'Content-Type': 'application/json'}
 
-              var formBody = {token: tokenResponse, email: graphJson.userPrincipalName}
+              var formBody = {token: tokenResponse.token, email: graphJson.userPrincipalName}
 
-
-              fetch('/auth/login', {
+              fetch('/auth/webLogin', {
                 method: 'POST',
                 headers: newHeaders,
                 body: JSON.stringify(formBody)

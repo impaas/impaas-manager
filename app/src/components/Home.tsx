@@ -134,6 +134,8 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
     setIsHelpOpen(false);
   };
 
+  const [reload, setReload] = useState(false);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -218,7 +220,7 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
               {/* <ScientiaButton /> */}
             </Grid>
             <Grid item>
-              <UploadButton onUploadStart={() => setIsLogOpen(true)} log={log} />
+              <UploadButton onUploadStart={() => setIsLogOpen(true)} log={log} activeacc={activeAcct} reload={reload} setReload={setReload} />
             </Grid>
             </Grid>
             <IconButton onClick={handleHelpOpen} sx={{ marginLeft: 'auto' }}>
@@ -279,7 +281,7 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
           }}
         >
           <Toolbar />
-          <ProjectList />
+          <ProjectList activeAcct={activeAcct} reload={reload}/>
 
           <Dialog open={isLogOpen} maxWidth="md" fullWidth>
             <DialogTitle fontWeight="bold" style={{ display: 'flex', alignItems: 'center' }}>
