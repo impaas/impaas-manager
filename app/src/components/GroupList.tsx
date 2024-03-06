@@ -1,7 +1,6 @@
 import { Box, Card, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, IconButton } from '@mui/material';
 import { useEffect, useState } from "react";
 import Group from "./Group";
-import { headers } from "./Group";
 import ExtensionIcon from '@mui/icons-material/Extension';
 import StorageIcon from '@mui/icons-material/Storage';
 
@@ -14,7 +13,8 @@ const GroupList: React.FC<GroupListProps> = ({ project }) => {
   const [search, setSearch] = useState('');
 
   const fetchGroups = async () => {
-    const response = await fetch('/teams', { headers });
+    const headers = { 'Authorization': `Bearer ${localStorage.getItem("tsurutoken")}` }
+    const response = await fetch('/teams',  { headers })
     const data = await response.json();
     setGroups(data);
   };

@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Collapse, Table, TableBody, TableCell,TableHead, TableRow, IconButton } from '@mui/material';
 
-export const headers = { 'Authorization': `Bearer ${localStorage.getItem("tsurutoken")}` }
+const headers = { 'Authorization': `Bearer ${localStorage.getItem("tsurutoken")}` }
 
 interface GroupProps {
     name: string;
