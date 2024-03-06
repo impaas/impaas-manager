@@ -211,7 +211,6 @@ export default function Home({ activeAcct, handleLogout }: { activeAcct: any, ha
             <Divider />
             <List component="nav">
               <ListItemButtonWithSelector itemName="Dashboard" setAssignmentName={setAssignmentName} />
-              <ListItemButtonWithSelector itemName="Projects" setAssignmentName={setAssignmentName} />
             </List>
             <Divider />
             <Box sx={{ flexGrow: 1 }} />
