@@ -11,7 +11,7 @@ const ProjectList = ({activeAcct, reload}: { activeAcct: any, reload: boolean}) 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://managertest.impaas.uk/query', {
+                const response = await fetch('https://manager-api.impaas.uk/query', {
                     method: 'GET',
                     headers: {
                         'teacher': activeAcct.username

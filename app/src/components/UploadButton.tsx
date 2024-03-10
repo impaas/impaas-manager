@@ -19,7 +19,7 @@ export const create = async (data: string, log: logT, activeacc:any) => {
     const projectNamesCleaned = projectNames.map((project: string) => project.toLowerCase().replace(/ /g, '_').replace(/[^a-z0-9_]/g, ''));
     var canbreak = false;
     try {
-        const response = await fetch('https://managertest.impaas.uk/query', {
+        const response = await fetch('https://manager-api.impaas.uk/query', {
             method: 'GET',
             headers: {
                 'teacher': activeacc.username
@@ -50,7 +50,7 @@ export const create = async (data: string, log: logT, activeacc:any) => {
             const groups = projects[project].groups;
             const description = projects[project].description as string;
             try {
-                const response = await fetch('https://managertest.impaas.uk/add_project', {
+                const response = await fetch('https://manager-api.impaas.uk/add_project', {
                     method: 'POST',
                     headers: {
                         'teacher': activeacc.username,
