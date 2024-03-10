@@ -2,7 +2,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { Dates } from './Dates';
 import GroupList from './GroupList';
 
 const Project: React.FC = () => {
@@ -24,7 +23,6 @@ const Project: React.FC = () => {
                             <Typography variant="h5" component="h2">
                                 {name}
                             </Typography>
-                            <Dates />
                             <GroupList project={projectName} />
                         </CardContent>
                     </Card>
